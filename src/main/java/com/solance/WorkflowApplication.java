@@ -22,7 +22,7 @@ public class WorkflowApplication {
             try (Connection conn = dataSource.getConnection()) {
                 // 获取 HikariCP 特定信息
                 if (dataSource instanceof com.zaxxer.hikari.HikariDataSource) {
-                    com.zaxxer.hikari.HikariDataSource hikari =
+                    com.zaxxer.hikari.HikariDataSource hikari = //
                             (com.zaxxer.hikari.HikariDataSource) dataSource;
 
                     System.out.println("Connection pool name: " + hikari.getPoolName());
