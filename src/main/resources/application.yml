@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb # 开发环境使用 H2
+    # 生产环境使用 PostgreSQL 示例:
+    # url: jdbc:postgresql://your-db-host:5432/solance_db
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.h2.Driver
+    # 生产环境使用:
+    # driver-class-name: org.postgresql.Driver
+
+    # HikariCP 配置
+    hikari:
+      pool-name: SolanceHikariPool
+      minimum-idle: 10 # 最小空闲连接数
+      maximum-pool-size: 20 # 最大连接数
+      idle-timeout: 60000 # 空闲连接超时时间 (毫秒)
+      max-lifetime: 1800000 # 连接最大生命周期 (毫秒)
+      connection-timeout: 3000 # 连接超时时间 (毫秒)
+      connection-test-query: SELECT 1 # 连接测试查询
+      leak-detection-threshold: 5000 # 连接泄漏检测阈值 (毫秒)
+
+      # 生产环境推荐配置
+      auto-commit: false
+      read-only: false
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      data-source-properties:
+        prepareThreshold: 5
+        defaultRowFetchSize: 100
+        reWriteBatchedInserts: true
+
+        jpa:
+          properties:
+            hibernate:
+              jdbc:
+                batch_size: 50
+              order_inserts: true
+              order_updates: true
+
+      management:
+        endpoints:
+          web:
+            exposure:
+              include: hikaricp,health,metrics
+# application-prod.yml
+async:
+  executor:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 500
