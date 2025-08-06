@@ -1,62 +1,40 @@
 package com.solance.domain;
-import com.solance.domain.TransactionStatus;
-import com.solance.dto.PaymentRequest;
-import com.solance.service.mapper.TransactionMapper;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.experimental.SuperBuilder;
-//import org.hibernate.resource.transaction.spi.TransactionStatus;
-import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-// Transaction.java
-@Service
-@RequiredArgsConstructor
 @Entity
+@Table(name = "transactions")  // 显式指定表名
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "txn_type")
+@DiscriminatorColumn(name = "txn_type", discriminatorType = DiscriminatorType.STRING)
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Transaction {
+public class Transaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "amount", precision = 19, scale = 4)  // 金额精度
     private BigDecimal amount;
+
+    @Column(name = "currency", length = 3)  // 货币代码长度
     private String currency;
+
+    @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime timestamp;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 20)
     private TransactionStatus status = TransactionStatus.PENDING;
-
-    // 确保有这些 getter 方法
-    public Long getId() {
-        return id;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
-    }
-
 }
-
