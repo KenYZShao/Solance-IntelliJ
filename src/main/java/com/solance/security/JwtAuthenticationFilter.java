@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String SECRET_KEY = "YourSuperSecureSecretKeyWithAtLeast256BitsLength1234567890";
