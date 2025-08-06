@@ -12,7 +12,7 @@ import java.sql.Connection;
 public class WorkflowApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WorkflowApplication.class, args);
+        SpringApplication.run(WorkflowApplication.class, args);//my try
     }
 
     @Bean
